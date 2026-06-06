@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gonuguntla Hemavathi | Data Scientist</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --accent: #7c6af7;
+    --accent2: #a78bfa;
+    --accent3: #c4b5fd;
+    --teal: #2dd4bf;
+    --amber: #fbbf24;
+    --text: #f0eeff;
+    --muted: #8b82b0;
+    --border: rgba(124,106,247,0.2);
+    --card-bg: rgba(26,26,36,0.8);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,106,247,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,106,247,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Glow orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb1 { width: 500px; height: 500px; background: var(--accent); top: -100px; left: -100px; }
+  .orb2 { width: 400px; height: 400px; background: var(--teal); bottom: 10%; right: -80px; }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1rem 2rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--accent3);
+    letter-spacing: 0.05em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { color: var(--accent3); }
+
+  section { position: relative; z-index: 1; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 2rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-content { max-width: 750px; }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: rgba(124,106,247,0.1);
+    border: 1px solid rgba(124,106,247,0.3);
+    padding: 0.3rem 0.8rem;
+    border-radius: 2rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--accent2), var(--teal));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin: 1.5rem 0 2.5rem;
+    font-weight: 300;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+  }
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.3rem;
+    border: 1px solid;
+  }
+  .badge-purple { color: var(--accent3); border-color: rgba(167,139,250,0.3); background: rgba(124,106,247,0.08); }
+  .badge-teal { color: var(--teal); border-color: rgba(45,212,191,0.3); background: rgba(45,212,191,0.08); }
+  .badge-amber { color: var(--amber); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.08); }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    padding: 0.75rem 1.75rem;
+    border-radius: 0.4rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--accent3);
+    border: 1px solid rgba(167,139,250,0.4);
+  }
+  .btn-outline:hover { background: rgba(124,106,247,0.1); transform: translateY(-1px); }
+
+  /* STATS BAR */
+  .stats-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 1.5rem 2rem;
+  }
+  .stats-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--accent2);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* SECTIONS COMMON */
+  .section-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 3rem;
+    color: var(--text);
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .skill-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .skill-card:hover { border-color: rgba(124,106,247,0.5); transform: translateY(-2px); }
+  .skill-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .skill-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--accent3);
+    margin-bottom: 0.6rem;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+  .skill-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.55rem;
+    background: rgba(124,106,247,0.1);
+    color: var(--muted);
+    border-radius: 0.25rem;
+    border: 1px solid rgba(124,106,247,0.15);
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--teal));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .project-card:hover { border-color: rgba(124,106,247,0.4); transform: translateY(-3px); }
+  .project-card:hover::before { opacity: 1; }
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+  .project-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: rgba(124,106,247,0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+  .project-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .project-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+  .project-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    background: rgba(10,10,15,0.5);
+    border-radius: 0.5rem;
+    padding: 0.9rem;
+  }
+  .metric { text-align: center; }
+  .metric-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--accent2);
+    display: block;
+  }
+  .metric-label { font-size: 0.7rem; color: var(--muted); }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .stack-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(45,212,191,0.08);
+    color: var(--teal);
+    border: 1px solid rgba(45,212,191,0.2);
+    border-radius: 0.25rem;
+  }
+
+  /* EXPERIENCE */
+  .exp-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.25rem;
+  }
+  .exp-left { min-width: 160px; }
+  .exp-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+  .exp-type {
+    font-size: 0.75rem;
+    color: var(--muted);
+    background: rgba(124,106,247,0.08);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    display: inline-block;
+  }
+  .exp-title { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
+  .exp-org { font-size: 0.85rem; color: var(--accent2); margin-bottom: 0.75rem; }
+  .exp-points { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .exp-points li {
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding-left: 1rem;
+    position: relative;
+  }
+  .exp-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.7rem;
+    top: 0.15rem;
+  }
+
+  /* CERTS */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  .cert-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    transition: border-color 0.2s;
+  }
+  .cert-card:hover { border-color: rgba(124,106,247,0.4); }
+  .cert-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .cert-name { font-size: 0.85rem; color: var(--text); font-weight: 500; }
+  .cert-org { font-size: 0.75rem; color: var(--muted); }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+  }
+  .contact-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+  .contact-inner .section-title { margin-bottom: 1rem; }
+  .contact-sub { color: var(--muted); margin-bottom: 2.5rem; font-size: 1rem; }
+  .contact-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent3);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 0.4rem;
+    transition: all 0.2s;
+    background: rgba(124,106,247,0.05);
+  }
+  .contact-link:hover { background: rgba(124,106,247,0.15); transform: translateY(-1px); }
+
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-content > * { animation: fadeUp 0.6s ease forwards; opacity: 0; }
+  .hero-tag { animation-delay: 0.1s; }
+  .hero h1 { animation-delay: 0.2s; }
+  .hero-sub { animation-delay: 0.3s; }
+  .hero-badges { animation-delay: 0.4s; }
+  .hero-cta { animation-delay: 0.5s; }
+
+  @media (max-width: 700px) {
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .exp-card { flex-direction: column; gap: 1rem; }
+    .exp-left { min-width: unset; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<nav>
+  <span class="nav-logo">GH // portfolio</span>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section>
+  <div class="hero">
+    <div class="hero-content">
+      <span class="hero-tag">Available for Freelance · Remote · AI/DS</span>
+      <h1>Gonuguntla<br><em>Hemavathi</em></h1>
+      <p class="hero-sub">
+        Data Scientist & AI Analyst — building Python pipelines, evaluating LLM outputs, fine-tuning models, and turning raw datasets into actionable intelligence. 2026 engineering fresher, CGPA 9.8/10.
+      </p>
+      <div class="hero-badges">
+        <span class="badge badge-purple">Python · Pandas · NumPy</span>
+        <span class="badge badge-teal">LLM Evaluation · RLHF · SFT</span>
+        <span class="badge badge-amber">Scikit-learn · ML Pipelines</span>
+        <span class="badge badge-purple">Jupyter Notebooks</span>
+        <span class="badge badge-teal">Kaggle · Public Datasets</span>
+        <span class="badge badge-amber">Anthropic · OpenAI API</span>
+      </div>
+      <div class="hero-cta">
+        <a href="mailto:gonuguntlahema34@gmail.com" class="btn btn-primary">Hire Me</a>
+        <a href="https://linkedin.com/in/gonuguntla-hemavathi" class="btn btn-outline">LinkedIn ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div>
+      <span class="stat-num">9.8</span>
+      <span class="stat-label">CGPA / 10</span>
+    </div>
+    <div>
+      <span class="stat-num">500+</span>
+      <span class="stat-label">LLM Outputs Evaluated</span>
+    </div>
+    <div>
+      <span class="stat-num">95%</span>
+      <span class="stat-label">Model Accuracy Achieved</span>
+    </div>
+    <div>
+      <span class="stat-num">6+</span>
+      <span class="stat-label">Certifications</span>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-wrap">
+    <p class="section-eyebrow">What I bring</p>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">🐍</div>
+        <h3>Python & Data Analysis</h3>
+        <p style="font-size:0.83rem;color:var(--muted);">End-to-end data pipelines, EDA, statistical analysis on public datasets including Kaggle, UN, and government data.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Pandas</span><span class="skill-tag">NumPy</span><span class="skill-tag">Matplotlib</span><span class="skill-tag">Seaborn</span><span class="skill-tag">Jupyter</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🤖</div>
+        <h3>AI/ML Model Development</h3>
+        <p style="font-size:0.83rem;color:var(--muted);">Model training, optimisation, benchmarking, and evaluation across classification, regression, and anomaly detection tasks.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Scikit-learn</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">IBM Watson</span><span class="skill-tag">F1/AUC</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🧠</div>
+        <h3>LLM Evaluation & RLHF</h3>
+        <p style="font-size:0.83rem;color:var(--muted);">Evaluating and ranking LLM outputs, creating SFT datasets, applying RLHF principles, prompt engineering and rationale documentation.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Anthropic API</span><span class="skill-tag">OpenAI API</span><span class="skill-tag">SFT Datasets</span><span class="skill-tag">RLHF</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📊</div>
+        <h3>Data Analytics & Insight</h3>
+        <p style="font-size:0.83rem;color:var(--muted);">Business query formulation, dataset analysis, key findings communication to researchers and non-technical stakeholders.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">SQL</span><span class="skill-tag">MySQL</span><span class="skill-tag">MongoDB</span><span class="skill-tag">Plotly</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">⚙️</div>
+        <h3>Engineering & Tools</h3>
+        <p style="font-size:0.83rem;color:var(--muted);">Production-grade code, CI/CD pipelines, containerisation, API development, and peer code review.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Git</span><span class="skill-tag">Docker</span><span class="skill-tag">FastAPI</span><span class="skill-tag">GitHub Actions</span><span class="skill-tag">Linux</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">✍️</div>
+        <h3>Documentation & Communication</h3>
+        <p style="font-size:0.83rem;color:var(--muted);">Jupyter notebook narrative writing, technical documentation, IEEE research paper publication, stakeholder communication.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Jupyter</span><span class="skill-tag">IEEE Paper</span><span class="skill-tag">IECCT 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="section-wrap">
+    <p class="section-eyebrow">What I've built</p>
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-num">01</span>
+        </div>
+        <h3>ResumeOS — LLM Evaluation & Prompt Engineering Platform</h3>
+        <p class="project-desc">Built a Python platform integrating Anthropic and OpenAI APIs to generate, evaluate, and rank LLM responses across diverse prompts. Developed scoring rubrics, created SFT-style datasets, and applied RLHF principles to iteratively improve model alignment.</p>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val">45%</span><span class="metric-label">Response quality lift</span></div>
+          <div class="metric"><span class="metric-val">500+</span><span class="metric-label">Outputs evaluated</span></div>
+          <div class="metric"><span class="metric-val">40%</span><span class="metric-label">Low-quality output reduction</span></div>
+          <div class="metric"><span class="metric-val">35%</span><span class="metric-label">Pipeline efficiency gain</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="stack-tag">Python</span>
+          <span class="stack-tag">Anthropic API</span>
+          <span class="stack-tag">OpenAI API</span>
+          <span class="stack-tag">React.js</span>
+          <span class="stack-tag">Flask</span>
+          <span class="stack-tag">MySQL</span>
+          <span class="stack-tag">Jupyter</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-num">02</span>
+        </div>
+        <h3>AI/ML Anomaly Detection & Data Analysis Agent</h3>
+        <p class="project-desc">End-to-end data analysis on Kaggle public datasets using Pandas, NumPy, and Matplotlib. Trained and optimised ML models (isolation forest, classification, regression) with comprehensive benchmarking. Built FastAPI backend serving real-time inference.</p>
+        <div class="project-metrics">
+          <div class="metric"><span class="metric-val">95%</span><span class="metric-label">Anomaly detection accuracy</span></div>
+          <div class="metric"><span class="metric-val">40%</span><span class="metric-label">False positive reduction</span></div>
+          <div class="metric"><span class="metric-val">45%</span><span class="metric-label">Analyst effort saved</span></div>
+          <div class="metric"><span class="metric-val">200+</span><span class="metric-label">Test scenarios validated</span></div>
+        </div>
+        <div class="project-stack">
+          <span class="stack-tag">Python</span>
+          <span class="stack-tag">Scikit-learn</span>
+          <span class="stack-tag">Pandas</span>
+          <span class="stack-tag">NumPy</span>
+          <span class="stack-tag">FastAPI</span>
+          <span class="stack-tag">MySQL</span>
+          <span class="stack-tag">Kaggle</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-wrap">
+    <p class="section-eyebrow">Where I've worked</p>
+    <h2 class="section-title">Experience</h2>
+    <div class="exp-card">
+      <div class="exp-left">
+        <p class="exp-period">Jun – Jul 2025</p>
+        <span class="exp-type">AI Internship</span>
+      </div>
+      <div>
+        <p class="exp-title">AI Intern</p>
+        <p class="exp-org">IBM Eduskills Build Platform · AICTE Certified · Remote</p>
+        <ul class="exp-points">
+          <li>Developed and optimised AI/ML models in Python using IBM Watson Studio; conducted model evaluations, benchmarking, and output quality assessment — improving model accuracy by 30%.</li>
+          <li>Assessed AI-generated responses for accuracy, relevance, and coherence; provided structured evaluation feedback with detailed rationale in Jupyter notebooks.</li>
+          <li>Curated high-quality task-specific datasets and maintained thorough technical documentation following SDLC best practices throughout delivery.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-left">
+        <p class="exp-period">Oct 2022 – Present</p>
+        <span class="exp-type">Education</span>
+      </div>
+      <div>
+        <p class="exp-title">B.E. — Electrical & Electronics Engineering</p>
+        <p class="exp-org">Mohan Babu University, Tirupati · CGPA 9.8/10</p>
+        <ul class="exp-points">
+          <li>Chairperson, IEEE Women in Engineering — led cross-functional programs with structured delivery and zero quality compromise.</li>
+          <li>Technical Lead, SPIKES Engineering Club — owned full project lifecycle with SDLC compliance.</li>
+          <li>IEEE Conference Author — paper accepted at IECCT 2026: "In-Pipe Micro Hydropower Generation With Embedded Arduino Monitoring".</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications" style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="section-wrap">
+    <p class="section-eyebrow">Credentials</p>
+    <h2 class="section-title">Certifications</h2>
+    <div class="certs-grid">
+      <div class="cert-card"><div class="cert-dot"></div><div><div class="cert-name">Python for Data Science</div><div class="cert-org">IBM</div></div></div>
+      <div class="cert-card"><div class="cert-dot" style="background:var(--teal)"></div><div><div class="cert-name">GenAI Powered Data Analytics</div><div class="cert-org">Tata Group</div></div></div>
+      <div class="cert-card"><div class="cert-dot" style="background:var(--amber)"></div><div><div class="cert-name">Nordics Software Engineering</div><div class="cert-org">Accenture</div></div></div>
+      <div class="cert-card"><div class="cert-dot"></div><div><div class="cert-name">Cybersecurity Analyst</div><div class="cert-org">Tata Group</div></div></div>
+      <div class="cert-card"><div class="cert-dot" style="background:var(--teal)"></div><div><div class="cert-name">Essentials of Leadership Skills</div><div class="cert-org">Coursera</div></div></div>
+      <div class="cert-card"><div class="cert-dot" style="background:var(--amber)"></div><div><div class="cert-name">Managing Innovation & Entrepreneurship</div><div class="cert-org">Coursera</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="contact-inner">
+    <p class="section-eyebrow">Get in touch</p>
+    <h2 class="section-title">Let's work together</h2>
+    <p class="contact-sub">Open to freelance data science and AI evaluation roles. Available 20–40 hrs/week, remote, PST overlap.</p>
+    <div class="contact-links">
+      <a href="mailto:gonuguntlahema34@gmail.com" class="contact-link">✉ gonuguntlahema34@gmail.com</a>
+      <a href="https://linkedin.com/in/gonuguntla-hemavathi" class="contact-link">in LinkedIn</a>
+      <a href="tel:+918247763160" class="contact-link">📞 +91-8247763160</a>
+    </div>
+  </div>
+</section>
+
+<footer>gonuguntla hemavathi · data scientist · 2026 · built with purpose</footer>
+
+</body>
+</html>
